@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+    <item id="cadastros-basicos" text="Cadastros Básicos">
+        <item id="funcionario" text="Funcionário"/>
+        <item id="alunos" text="Alunos"/>
+    </item>
+    <item id="consultas" text="Consultas">
+        <item id="consultaprofuncionario" text="Consultar Profuncionário"/>
+        <item id="consultapronatec" text="Consultar Pronatec"/>
+    </item>
+    <item id="usuario" text="Usuário">
+        <item id="novousuario" text="Cadastrar"/>
+        <item id="mudarsenha" text="Mudar Senha"/>
+    </item>
+</menu>

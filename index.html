@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="dhtmlx.js" type="text/javascript"></script>
+    <script src="scripts/dhtmlxgrid_export.js" type="text/javascript"></script>
+    <script type="text/javascript" src="types/ftypes.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="dhtmlx.css"/>
+    <link rel="STYLESHEET" type="text/css" href="estilo.css"/>
+   <link rel="STYLESHEET" type="text/css" href="types/ftypes.css"/>
+ 
+    <script type="text/javascript">
+        var layout,mygrid,form,menu;
+     function doOnLoad(){
+
+          layout = new dhtmlXLayoutObject(document.body, "2E");
+          layout.cells("a").setText("Consulta Profuncionário");
+          layout.cells("a").setHeight(150);
+          layout.dhxWins.setImagePath("imgs/");
+           menu=layout.attachMenu();
+            menu.loadXML("xml/menu.xml");
+         form=layout.cells("a").attachForm();
+         form.loadStruct("server/formfiltro.php");
+         form.attachEvent("onButtonClick",function(name,command){
+            if(name=="pesquisar")
+                doFilter();
+            else if(name=="imprimir"){
+                 dhtmlx.message({text:"Gerando Excel...",id:"mensagem"});
+                mygrid.toExcel('excel/generate.php');
+                dhtmlx.message.hide("mensagem");
+            }
+         });
+         layout.cells("b").hideHeader();
+         mygrid = layout.cells("b").attachGrid();
+         mygrid.setImagePath("imgs/");
+        mygrid.attachEvent("onXLS", function() {
+            dhtmlx.message({text:"Carregando...",id:"mensagem"});
+         });
+        mygrid.attachEvent("onXLE", function() {
+            dhtmlx.message.hide("mensagem");
+        })
+         mygrid.setHeader("CPF,Nome,Curso,Data,Entrada,Saída,Permanência");
+         mygrid.setInitWidthsP("10,30,20,10,10,10,10");
+         mygrid.loadXML("server/gridprofuncionario.php");
+        mygrid.init();
+     }
+     function doFilter(){
+           form.send("server/gridprofuncionario.php","post",function(loader,response){
+               mygrid.clearAll();
+               mygrid.parse(response); 
+           }); 
+      }
+    </script>
+</head>
+<body onload="doOnLoad();">
+    
+</body>
+</html>

@@ -1,0 +1,36 @@
+<?php
+header("Content-type: text/xml");
+echo("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+echo("<items>");
+echo('<item type="block">');
+echo('<item type="label" label="Nome:" />');
+echo('<item type="newcolumn" offset="12"/>');
+echo('<item type="input" name="nome" inputWidth="320"/>');
+echo('</item>');
+echo('<item type="block">');
+echo('<item type="label" label="Curso:"/>');
+echo('<item type="newcolumn" offset="12"/>');
+echo('<item type="select" name="curso">');
+echo('<option value="-" text="-" selected="true"/>');
+echo('<option value="TÉCNICO EM SECRETARIA ESCOLAR" text="TÉCNICO EM SECRETARIA ESCOLAR" selected="false"/>');
+echo('<option value="TÉCNICO EM ALIMENTAÇÃO ESCOLAR" text="TÉCNICO EM ALIMENTAÇÃO ESCOLAR" selected="false"/>');
+echo('</item>');
+echo('</item>');
+echo('<item type="block">');
+echo('<item type="label" label="Período:"/>');
+echo('<item type="newcolumn" />');
+echo('<item type="calendar"  name="datainicio" dateFormat="%d/%m/%Y" serverFormat="%d/%m/%Y"/>');
+echo('<item type="newcolumn" offset="5"/>');
+echo('<item type="label" label="a"/>');
+echo('<item type="newcolumn" offset="5"/>');
+echo('<item type="calendar"  name="datatermino" dateFormat="%d/%m/%Y" serverFormat="%d/%m/%Y"/>');
+echo('</item>');
+echo('<item type="block">');
+echo('<item type="button" name="pesquisar" value="Pesquisar"/>');
+echo('<item type="newcolumn" offset="5"/>');
+echo('<item type="button" name="limpar" value="Limpar"/>');
+echo('<item type="newcolumn" offset="5"/>');
+echo('<item type="button" name="imprimir" value="Imprimir Declaração"/>');
+echo('</item>');
+echo("</items>");
+?>

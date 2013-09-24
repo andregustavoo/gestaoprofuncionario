@@ -30,7 +30,9 @@ echo('<item type="button" name="pesquisar" value="Pesquisar"/>');
 echo('<item type="newcolumn" offset="5"/>');
 echo('<item type="button" name="limpar" value="Limpar"/>');
 echo('<item type="newcolumn" offset="5"/>');
-echo('<item type="button" name="imprimir" value="Imprimir Declaração"/>');
+echo('<item type="button" name="excel" value="Exportar Excel"/>');
+echo('<item type="newcolumn" offset="5"/>');
+echo('<item type="button" name="imprimir" value="Visualizar Declaração"/>');
 echo('</item>');
 echo("</items>");
 ?>

@@ -11,7 +11,7 @@ $grid->setInitWidthsP('10,30,20,10,10,10,10');
 $gridconnector->set_config($grid);
 $gridconnector->render_table('ponto_profuncionario','cpf','cpf,nome,departamento,dataPonto,entrada_ponto,saida_ponto,permanencia');*/
 require_once './gerarXML.php';
-$conexao=  new mysqli('10.210.1.131', 'root', 'd3adl0ck', 'cadastros_db', '3306');
+require_once './DAO.php';
 header("Content-type: text/xml");
 echo("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 $sql="select * from ponto_profuncionario";
@@ -27,12 +27,15 @@ if(isset($_POST['curso']) && $_POST['curso']!='-'){
 if(isset($_POST['datainicio']) && isset($_POST['datatermino']) && $_POST['datainicio']!='' && $_POST['datatermino']!='') {
     if($criteria!='')
         $criteria=$criteria." and ";
-    $criteria=$criteria . "dataPonto between '".$_POST['datainicio']."' and '".$_POST['datatermino']."'";
+    $datainicio=  DateTime::createFromFormat('d/m/Y', $_POST['datainicio']);
+    $datatermino= DateTime::createFromFormat('d/m/Y', $_POST['datatermino']);
+    $criteria=$criteria . "ponto_profuncionario.data>='".  $datainicio->format('Y-m-d')."' and ponto_profuncionario.data<='".  $datatermino->format('Y-m-d')."'";
+ 
 }
 if($criteria!=''){
     $sql=$sql." where ".$criteria;
 }
-$tabela=$conexao->query($sql);
+$tabela=DAO::getConexao()->query($sql);
 //echo($sql);
 echo gerarXMLGrid($tabela->fetch_all());
 ?>

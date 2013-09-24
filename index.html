@@ -10,24 +10,29 @@
    <link rel="STYLESHEET" type="text/css" href="types/ftypes.css"/>
  
     <script type="text/javascript">
-        var layout,mygrid,form,menu;
+        var layout,mygrid,form,menu,toolbar;
      function doOnLoad(){
 
           layout = new dhtmlXLayoutObject(document.body, "2E");
           layout.cells("a").setText("Consulta Profuncionário");
-          layout.cells("a").setHeight(150);
+          layout.cells("a").setHeight(180);
           layout.dhxWins.setImagePath("imgs/");
-           menu=layout.attachMenu();
-            menu.loadXML("xml/menu.xml");
+           toolbar=layout.cells("a").attachToolbar();
+           toolbar.loadXML("server/gerartoolbar.php");
          form=layout.cells("a").attachForm();
          form.loadStruct("server/formfiltro.php");
          form.attachEvent("onButtonClick",function(name,command){
             if(name=="pesquisar")
                 doFilter();
-            else if(name=="imprimir"){
-                 dhtmlx.message({text:"Gerando Excel...",id:"mensagem"});
+            else if(name=="excel"){
+                 
                 mygrid.toExcel('excel/generate.php');
-                dhtmlx.message.hide("mensagem");
+              
+            }
+            else if(name="imprimir"){
+                dhtmlx.message({text:"Gerando...",id:"mensagem01"});
+                imprimirDeclaracoes();
+                 dhtmlx.message.hide("mensagem01");
             }
          });
          layout.cells("b").hideHeader();
@@ -49,6 +54,40 @@
                mygrid.clearAll();
                mygrid.parse(response); 
            }); 
+      }
+      function getcpfs(){
+          var cpfs=new Array();
+          cpfs[0]=mygrid.cells(1,0).getValue();
+          for(var linha=1;linha<mygrid.getRowsNum();linha++){
+              if (cpfs[cpfs.length-1]!==mygrid.cells(linha,0).getValue()){
+                  cpfs[cpfs.length]=mygrid.cells(linha,0).getValue();
+              }
+          }
+          return cpfs;
+      }
+      function imprimirDeclaracoes(){
+          var cpfs=getcpfs();
+          var janela;
+          var x=10,y=20;
+          //captura as datas
+          var datainicio=form.getCalendar("datainicio").getFormatedDate("%d-%m-%Y");
+          var datatermino=form.getCalendar("datatermino").getFormatedDate("%d-%m-%Y");
+          //captura o funcionário
+          var idfuncionario=toolbar.getListOptionSelected("responsavel");
+         var url;
+          for(var linha=0;linha<cpfs.length;linha++){
+              //janela=layout.dhxWins.createWindow(linha,0,0,800,600);
+              url="report/declaracaocomparecimento.php?cpf="+cpfs[linha]+"&idfuncionario="+
+                     idfuncionario+"&datainicio="+datainicio+"&datatermino="+datatermino;
+             window.alert(url);
+             janela=window.open(url,"win"+linha,"location=0,scrollbars=1,width=800,heigth=600");
+             janela.moveTo(x,y);
+              /*layout.dhxWins.window(linha).center();
+              layout.dhxWins.window(linha).setPosition(x,y);
+              */
+              x+=10;
+              y+=20;
+          }
       }
     </script>
 </head>
